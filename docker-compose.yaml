@@ -10,10 +10,16 @@ services:
     environment:
       - DATABASE_URL=postgresql://user:password@db:5432/rostelecom
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - .:/app  # Mount for development (reload on code changes)
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: >
+      sh -c "until prisma db push --schema==app/database/schema.prisma; do
+        echo 'waiting for database to be ready...';
+        sleep 2;
+      done &&
+      uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
 
   db:
     image: postgres:15
@@ -25,6 +31,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d rostelecom"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
