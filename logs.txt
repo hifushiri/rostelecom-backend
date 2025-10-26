@@ -1,0 +1,127 @@
+db-1   | 2025-10-26 03:56:10.797 UTC [140] FATAL:  database "rostelecom" does not exist
+app-1  | {"is_panic":false,"message":"Database `rostelecom` does not exist on the database server at `db:5432`.","meta":{"database_name":"rostelecom","database_host":"db","database_port":5432},"error_code":"P1003"}
+app-1  | ERROR:    Traceback (most recent call last):
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+app-1  |     yield
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+app-1  |     resp = await self._pool.handle_async_request(req)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+app-1  |     raise exc from None
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+app-1  |     response = await connection.handle_async_request(
+app-1  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+app-1  |     raise exc
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+app-1  |     stream = await self._connect(request)
+app-1  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpcore/_async/connection.py", line 124, in _connect
+app-1  |     stream = await self._network_backend.connect_tcp(**kwargs)
+app-1  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+app-1  |     return await self._backend.connect_tcp(
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+app-1  |     with map_exceptions(exc_map):
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 158, in __exit__
+app-1  |     self.gen.throw(typ, value, traceback)
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+app-1  |     raise to_exc(exc) from exc
+app-1  | httpcore.ConnectError: All connection attempts failed
+app-1  | 
+app-1  | The above exception was the direct cause of the following exception:
+app-1  | 
+app-1  | Traceback (most recent call last):
+app-1  |   File "/usr/local/lib/python3.11/site-packages/prisma/engine/_query.py", line 368, in spawn
+app-1  |     data = await self.request('GET', '/status')
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/prisma/engine/_http.py", line 217, in request
+app-1  |     response = await self.session.request(method, url, **kwargs)
+app-1  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/prisma/_async_http.py", line 26, in request
+app-1  |     return Response(await self.session.request(method, url, **kwargs))
+app-1  |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpx/_client.py", line 1540, in request
+app-1  |     return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpx/_client.py", line 1629, in send
+app-1  |     response = await self._send_handling_auth(
+app-1  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+app-1  |     response = await self._send_handling_redirects(
+app-1  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+app-1  |     response = await self._send_single_request(request)
+app-1  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpx/_client.py", line 1730, in _send_single_request
+app-1  |     response = await transport.handle_async_request(request)
+app-1  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+app-1  |     with map_httpcore_exceptions():
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 158, in __exit__
+app-1  |     self.gen.throw(typ, value, traceback)
+app-1  |   File "/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+app-1  |     raise mapped_exc(message) from exc
+app-1  | httpx.ConnectError: All connection attempts failed
+app-1  | 
+app-1  | The above exception was the direct cause of the following exception:
+app-1  | 
+app-1  | Traceback (most recent call last):
+app-1  |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 694, in lifespan
+app-1  |     async with self.lifespan_context(app) as maybe_state:
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 210, in __aenter__
+app-1  |     return await anext(self.gen)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 210, in merged_lifespan
+app-1  |     async with original_context(app) as maybe_original_state:
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 210, in __aenter__
+app-1  |     return await anext(self.gen)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 210, in merged_lifespan
+app-1  |     async with original_context(app) as maybe_original_state:
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 210, in __aenter__
+app-1  |     return await anext(self.gen)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 210, in merged_lifespan
+app-1  |     async with original_context(app) as maybe_original_state:
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 210, in __aenter__
+app-1  |     return await anext(self.gen)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 210, in merged_lifespan
+app-1  |     async with original_context(app) as maybe_original_state:
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 210, in __aenter__
+app-1  |     return await anext(self.gen)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 210, in merged_lifespan
+app-1  |     async with original_context(app) as maybe_original_state:
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 210, in __aenter__
+app-1  |     return await anext(self.gen)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 210, in merged_lifespan
+app-1  |     async with original_context(app) as maybe_original_state:
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 210, in __aenter__
+app-1  |     return await anext(self.gen)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 210, in merged_lifespan
+app-1  |     async with original_context(app) as maybe_original_state:
+app-1  |   File "/usr/local/lib/python3.11/contextlib.py", line 210, in __aenter__
+app-1  |     return await anext(self.gen)
+app-1  |            ^^^^^^^^^^^^^^^^^^^^^
+app-1  |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 210, in merged_lifespan
+app-1  |     async with original_context(app) as maybe_original_state:
+app-1  |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 571, in __aenter__
+app-1  |     await self._router.startup()
+app-1  |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 671, in startup
+app-1  |     await handler()
+app-1  |   File "/app/app/main.py", line 21, in startup
+app-1  |     await prisma.connect()
+app-1  |   File "/usr/local/lib/python3.11/site-packages/prisma/_base_client.py", line 442, in connect
+app-1  |     await self._internal_engine.connect(
+app-1  |   File "/usr/local/lib/python3.11/site-packages/prisma/engine/_query.py", line 350, in connect
+app-1  |     await self.spawn(file, timeout=timeout, datasources=datasources)
+app-1  |   File "/usr/local/lib/python3.11/site-packages/prisma/engine/_query.py", line 389, in spawn
+app-1  |     raise errors.EngineConnectionError('Could not connect to the query engine') from last_exc
+app-1  | prisma.engine.errors.EngineConnectionError: Could not connect to the query engine
+app-1  | 
+app-1  | ERROR:    Application startup failed. Exiting.
