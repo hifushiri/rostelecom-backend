@@ -1,0 +1,118 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-py"
+  interface = "asyncio"
+}
+
+enum Role {
+  ADMIN
+  ANALYST
+  USER
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  password   String
+  role       Role
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  changes    ChangeHistory[]
+}
+
+model DictionaryType {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  items DictionaryItem[] @relation("DictionaryTypeToItems") // Added opposite relation
+}
+
+model DictionaryItem {
+  id          Int      @id @default(autoincrement())
+  type_id     Int
+  value       String
+  probability Float?
+  type        DictionaryType @relation("DictionaryTypeToItems", fields: [type_id], references: [id])
+  @@unique([type_id, value])
+  projects_service          Project[] @relation("Service")
+  projects_payment_type     Project[] @relation("PaymentType")
+  projects_stage            Project[] @relation("Stage")
+  projects_business_segment Project[] @relation("BusinessSegment")
+  projects_assessment       Project[] @relation("Assessment")
+  revenues                  Revenue[] @relation("RevenueStatus")
+  costs_cost_type           Cost[]    @relation("CostType")
+  costs_status              Cost[]    @relation("CostStatus")
+}
+
+model Project {
+  id                       Int      @id @default(autoincrement())
+  org_name                 String
+  org_inn                  String
+  project_name             String
+  service_id               Int
+  payment_type_id          Int
+  stage_id                 Int
+  probability              Float
+  manager                  String
+  business_segment_id      Int
+  realization_year         DateTime?
+  industry_solution        Boolean  @default(false)
+  forecast_accepted        Boolean  @default(false)
+  via_dzo                  Boolean  @default(false)
+  needs_leadership_control Boolean  @default(false)
+  assessment_id            Int?
+  industry_manager         String?
+  project_number           String?
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
+  status                   String?  @db.VarChar(1000)
+  done_in_period           String?  @db.VarChar(1000)
+  plans_next_period        String?  @db.VarChar(1000)
+  service                  DictionaryItem @relation("Service", fields: [service_id], references: [id])
+  payment_type             DictionaryItem @relation("PaymentType", fields: [payment_type_id], references: [id])
+  stage                    DictionaryItem @relation("Stage", fields: [stage_id], references: [id])
+  business_segment         DictionaryItem @relation("BusinessSegment", fields: [business_segment_id], references: [id])
+  assessment               DictionaryItem? @relation("Assessment", fields: [assessment_id], references: [id])
+  revenues                 Revenue[]
+  costs                    Cost[]
+  changes                  ChangeHistory[]
+}
+
+model Revenue {
+  id         Int      @id @default(autoincrement())
+  project_id Int
+  year       Int?
+  month      Int?
+  amount     Float
+  status_id  Int
+  project    Project        @relation(fields: [project_id], references: [id])
+  status     DictionaryItem @relation("RevenueStatus", fields: [status_id], references: [id])
+}
+
+model Cost {
+  id           Int      @id @default(autoincrement())
+  project_id   Int
+  year         Int?
+  month        Int?
+  amount       Float
+  cost_type_id Int
+  status_id    Int
+  project      Project        @relation(fields: [project_id], references: [id])
+  cost_type    DictionaryItem @relation("CostType", fields: [cost_type_id], references: [id])
+  status       DictionaryItem @relation("CostStatus", fields: [status_id], references: [id])
+}
+
+model ChangeHistory {
+  id         Int      @id @default(autoincrement())
+  project_id Int
+  user_id    Int
+  field      String
+  old_value  String?
+  new_value  String?
+  changed_at DateTime @default(now())
+  project    Project @relation(fields: [project_id], references: [id])
+  user       User    @relation(fields: [user_id], references: [id])
+}

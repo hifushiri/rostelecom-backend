@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+prisma
+pydantic
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+openpyxl
+reportlab
+pyotp  # Added for 2FA
